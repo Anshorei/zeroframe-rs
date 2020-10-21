@@ -68,6 +68,7 @@ tasks:
     user: user
     input_paths:
       - src
+      - js
     command: |
       set -euo pipefail
       . $HOME/.cargo/env
