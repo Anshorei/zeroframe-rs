@@ -1,0 +1,17 @@
+[package]
+name = "zeroframe"
+version = "0.1.0"
+authors = ["Ansho Rei <anshorei@zeroid.bit>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+js-sys = "*"
+wasm-bindgen = { version = "*", features = [ "serde-serialize" ] }
+wasm-bindgen-futures = "*"
+base64 = "*"
+futures = "0.3"
+thiserror = "*"
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
