@@ -11,3 +11,12 @@ export async function cmdp(cmd, params={}) {
     console.log('received result', result)
     return result
 }
+
+export function on_request(cmd, handler) {
+    if (!document.frame.handlers) document.frame.handlers = []
+    document.frame.handlers[cmd] = handler
+    const defaultHandler = (cmd, msg) => document.frame.log("Unknown request", cmd, msg)
+    document.frame.onRequest = (cmd, msg) => {
+        (document.frame.handlers[cmd] || defaultHandler)(cmd, msg.params)
+    }
+}

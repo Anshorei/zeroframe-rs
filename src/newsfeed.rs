@@ -1,7 +1,7 @@
-use super::{cmd, cmdp};
-use wasm_bindgen::prelude::*;
-use crate::ZeroFrameError as Error;
+use super::cmdp;
 use crate::responses::ZeroResponse;
+use crate::ZeroFrameError as Error;
+use wasm_bindgen::prelude::*;
 
 /// Set followed SQL queries.
 pub async fn feed_follow(query: &str) -> Result<(), Error> {
@@ -24,5 +24,6 @@ pub async fn feed_query(limit: usize, day_limit: usize) -> JsValue {
       JsValue::from_f64(limit as f64),
       JsValue::from_f64(day_limit as f64),
     ],
-  ).await
+  )
+  .await
 }

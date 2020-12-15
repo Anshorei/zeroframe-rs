@@ -1,7 +1,7 @@
-use super::{cmd, cmdp};
-use wasm_bindgen::prelude::*;
-use crate::ZeroFrameError as Error;
+use super::cmdp;
 use crate::responses::ZeroResponse;
+use crate::ZeroFrameError as Error;
+use wasm_bindgen::prelude::*;
 
 pub async fn mute_add(auth_address: &str, cert_user_id: &str, reason: &str) -> Result<(), Error> {
   let response = cmdp(

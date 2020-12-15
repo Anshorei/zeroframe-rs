@@ -1,5 +1,7 @@
-use super::{cmd, cmdp};
+use super::{cmd, cmdp, on_request};
+use crate::ZeroFrameError as Error;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::{closure::Closure};
 
 pub enum NotificationType {
   Error,
@@ -23,17 +25,17 @@ impl Into<JsValue> for NotificationType {
   }
 }
 
-pub fn notify_info(message: &str, timeout: Option<usize>) {
-  notification(NotificationType::Info, message, timeout)
+pub fn notify_info<S: ToString>(message: S, timeout: Option<usize>) {
+  notification(NotificationType::Info, &message.to_string(), timeout)
 }
-pub fn notify_error(message: &str, timeout: Option<usize>) {
-  notification(NotificationType::Error, message, timeout)
+pub fn notify_error<S: ToString>(message: S, timeout: Option<usize>) {
+  notification(NotificationType::Error, &message.to_string(), timeout)
 }
-pub fn notify_done(message: &str, timeout: Option<usize>) {
-  notification(NotificationType::Done, message, timeout)
+pub fn notify_done<S: ToString>(message: S, timeout: Option<usize>) {
+  notification(NotificationType::Done, &message.to_string(), timeout)
 }
 
-pub fn confirm() {
+pub fn confirm() -> Result<bool, Error> {
   unimplemented!()
 }
 
@@ -134,4 +136,12 @@ pub fn set_title(title: &str) {
 
 pub fn set_viewport(viewport: &str) {
   cmd("wrapperSetViewport", vec![JsValue::from_str(viewport)])
+}
+
+pub fn add_request_handler<F: Fn(String, JsValue) + 'static>(cmd: &str, handler: F) {
+  let handler = Box::new(handler) as Box<dyn Fn(_, _)>;
+  // let handler = Box::new(move |a, b| handler(a, b)) as Box<dyn Fn(_, _)>;
+  let closure = Closure::wrap(handler);
+  on_request(cmd, &closure);
+  closure.forget();
 }

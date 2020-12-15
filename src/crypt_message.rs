@@ -1,4 +1,4 @@
-use super::{cmd, cmdp};
+use super::cmdp;
 use wasm_bindgen::prelude::*;
 
 pub async fn user_publickey(index: Option<usize>) -> JsValue {
@@ -17,7 +17,8 @@ pub async fn ecies_encrypt(text: &str, publickey_index: usize, return_aes_key: b
       JsValue::from_f64(publickey_index as f64),
       JsValue::from_bool(return_aes_key),
     ],
-  ).await
+  )
+  .await
 }
 
 pub async fn ecies_decrypt(params: &str, privatekey_index: usize) -> JsValue {
@@ -27,7 +28,8 @@ pub async fn ecies_decrypt(params: &str, privatekey_index: usize) -> JsValue {
       JsValue::from_str(params),
       JsValue::from_f64(privatekey_index as f64),
     ],
-  ).await
+  )
+  .await
 }
 
 pub async fn ecies_decrypt_multiple() {
@@ -42,7 +44,8 @@ pub async fn aes_encrypt(text: &str, key: Option<String>, iv: Option<String>) ->
       JsValue::from_str(&key.unwrap_or("generate new".to_string())),
       JsValue::from_str(&iv.unwrap_or("generate new".to_string())),
     ],
-  ).await
+  )
+  .await
 }
 
 pub async fn aes_decrypt(iv: &str, encrypted_text: &str, key: &str) -> JsValue {
@@ -54,7 +57,8 @@ pub async fn aes_decrypt(iv: &str, encrypted_text: &str, key: &str) -> JsValue {
       JsValue::null(),
       JsValue::from_str(key),
     ],
-  ).await
+  )
+  .await
 }
 
 pub async fn aes_decrypt_multiple() {

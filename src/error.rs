@@ -1,5 +1,5 @@
-use thiserror::Error;
 use crate::responses::ErrorResponse;
+use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum ZeroFrameError {
