@@ -35,8 +35,15 @@ pub fn notify_done<S: ToString>(message: S, timeout: Option<usize>) {
   notification(NotificationType::Done, &message.to_string(), timeout)
 }
 
-pub fn confirm() -> Result<bool, Error> {
-  unimplemented!()
+pub async fn confirm<S1: ToString, S2: ToString>(message: S1, button: S2) -> Result<bool, Error> {
+  let mut params = vec![];
+  params.push(JsValue::from_str(&message.to_string()));
+  params.push(JsValue::from_str(&button.to_string()));
+  let result = cmdp("wrapperConfirm", params).await;
+  match result.as_f64() {
+    Some(i) => Ok(i == 1.0),
+    None => Err(Error::InvalidResponse),
+  }
 }
 
 pub fn inner_loaded() {
@@ -130,8 +137,8 @@ pub fn set_local_storage(data: JsValue) {
   cmd("wrapperSetLocalStorage", vec![data])
 }
 
-pub fn set_title(title: &str) {
-  cmd("wrapperSetTitle", vec![JsValue::from_str(title)])
+pub fn set_title<S: ToString>(title: S) {
+  cmd("wrapperSetTitle", vec![JsValue::from_str(&title.to_string())])
 }
 
 pub fn set_viewport(viewport: &str) {

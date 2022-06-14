@@ -210,7 +210,7 @@ pub async fn site_publish(
   let response = cmdp(
     "sitePublish",
     vec![
-      JsValue::from_str(&privatekey.unwrap_or("stored".to_string())),
+      privatekey.map(|key| JsValue::from_str(&key)).unwrap_or(JsValue::null()),
       JsValue::from_str(&inner_path.unwrap_or("content.json".to_string())),
       JsValue::from_bool(sign),
     ],

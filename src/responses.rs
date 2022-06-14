@@ -15,6 +15,8 @@ impl ZeroResponse for JsValue {
     if let Some(result) = self.as_string() {
       if result == "ok".to_string() {
         return Ok(());
+      } else if self.is_falsy() {
+        return Err(Error::FalsyResponse);
       } else if let Some(err) = Error::from_response(result) {
         return Err(err);
       }

@@ -3,11 +3,13 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum ZeroFrameError {
+  #[error("API call returned falsy response")]
+  FalsyResponse,
   #[error("zeronet internal error")]
   RemoteError(String),
   #[error("could not parse response")]
   InvalidResponse,
-  #[error("could not serialize object")]
+  #[error("could not de/serialize object")]
   SerializationError(#[from] serde_json::Error),
 }
 
